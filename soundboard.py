@@ -12,7 +12,7 @@ To add more than 10 sounds, use a switch statement to control indexes into mp3_f
 
 EXITKEY = '-' #key pressed to break the loop
 STOPKEY = '+' #key pressed to stop all current played sounds
-filePath = "C:/Users/vikra/PycharmMiscProject/sounds" #where the sound files are located
+filePath = "FILEPATH" #where the sound files are located
 deviceName = 'CABLE Input (VB-Audio Virtual Cable)' #where you want the audio to go
 
 if __name__ == '__main__':
@@ -51,3 +51,4 @@ if __name__ == '__main__':
                 tempsound.play()
                 print("Playing:", sound)
                 sleep(0.2) #to not play the same sound multiple times
+
