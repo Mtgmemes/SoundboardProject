@@ -11,9 +11,13 @@ If this limit is exceeded then sounds assigned numbers 10 and up cannot be playe
 To add more than 10 sounds, use a switch statement to control indexes into mp3_files'''
 
 EXITKEY = '-' #key pressed to break the loop
-STOPKEY = '+' #key pressed to stop all current played sounds
-filePath = "FILEPATH" #where the sound files are located
+STOPKEY = '=' #key pressed to stop all current played sounds
+PAUSEKEY = ']'
+filePath = "C:/Users/vikra/PycharmMiscProject/sounds" #change to where the sound files are located
 deviceName = 'CABLE Input (VB-Audio Virtual Cable)' #where you want the audio to go
+#variable not needed if not using external software
+
+TIMEDELAY = 0.2
 
 if __name__ == '__main__':
 
@@ -29,26 +33,37 @@ if __name__ == '__main__':
         temp += 1
     print("enter " + EXITKEY + " to exit")
     print("enter " + STOPKEY + " to stop all sounds")
+    print("enter " + PAUSEKEY + " to pause the soundboard")
 
     mixer.init(devicename=deviceName) #initializing the mixer
+    #can change if not using external software
     sounds = [] #list of active sounds
+    paused = False
 
     while True:
         inputkey = keyboard.read_key()
         if inputkey == EXITKEY: #exiting the loop
             break
-        elif inputkey == STOPKEY: #stopping all sounds
+        if inputkey == PAUSEKEY:
+            sleep(TIMEDELAY)
             for temp in sounds:
-                temp.stop()
-            sounds = [] #clearing the array
-        elif inputkey.isdigit(): #only checking for number keys
-            sound_index = int(inputkey)
-            if sound_index < len(mp3_files): #checking bounds on the input
-                sound = mp3_files[sound_index] #finding the given sound in mp3_files
-                full_path = os.path.join(filePath, sound) #getting the filepath of the sound
-                tempsound = mixer.Sound(full_path)
-                sounds.append(tempsound) #adding tempsound to the array of sounds
-                tempsound.play()
-                print("Playing:", sound)
-                sleep(0.2) #to not play the same sound multiple times
-
+                    temp.stop()
+            sounds = []  # clearing the array
+            if paused: #flipping paused
+                paused = False
+            else:
+                paused = True
+        if paused == False:
+            if inputkey == STOPKEY: #stopping all sounds
+                for temp in sounds:\
+                    temp.stop()
+                sounds = [] #clearing the array
+            elif inputkey.isdigit(): #only checking for number keys
+                sound_index = int(inputkey)
+                if sound_index < len(mp3_files): #checking bounds on the input
+                    sound = mp3_files[sound_index] #finding the given sound in mp3_files
+                    full_path = os.path.join(filePath, sound) #getting the filepath of the sound
+                    tempsound = mixer.Sound(full_path)
+                    sounds.append(tempsound) #adding tempsound to the array of sounds
+                    tempsound.play()
+                    sleep(TIMEDELAY) #to not play the same sound multiple times
